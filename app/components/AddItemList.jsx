@@ -1,20 +1,31 @@
 import { useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import mmkvHelper from '../helpers/mmkvHelper';
 
 export default function AddItemList({onAddTask}) {
     const [newTask, setNewTask] = useState(''); 
-    const list = 'tareas';
+    const list = 'tareas';    
     const handleAddTask = () => {
-        mmkvHelper.saveTask(newTask,list);
-        setNewTask('');
-        onAddTask();
+        if(newTask.trim() === ''){
+            alert('La tarea no puede estar vacia');
+            return;
+        }else{
+            mmkvHelper.saveTask(newTask,list);
+            setNewTask('');
+            onAddTask();
+        }
+        
     }
     
 
     return (
-        <div className="todo-form">
-            <input className="todo-input" type="text" placeholder="Add a new task" value={newTask} onChange={(e) => setNewTask(e.target.value)} />
-            <button className="add-button" onClick={handleAddTask}>Add</button>
-        </div>
-    )
-}
+        <View className="todo-form">
+            <TextInput className="borderWidth-1px shadow appearance-no text-xl m-4 p-4 rounded-lg" type="text" placeholder="Add a new task" value={newTask} onChangeText={setNewTask} />
+            <Pressable  title='Add' className="bg-gray-300 rounded-lg p-2 text-center transition delay-50 duration 300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gray-100" onPress={() => handleAddTask()} >
+                <Text className='text-center p-2 text-2xl' >ADD</Text> 
+            </Pressable>
+        </View>
+    );
+};
+
+

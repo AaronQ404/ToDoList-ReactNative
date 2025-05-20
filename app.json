@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ToDoList-ReactNative",
-    "slug": "ToDoList-ReactNative",
+    "slug": "todolist",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.ToDoListReactNative"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "91de98e9-7fff-43ca-b109-99cee4e3871e"
+      }
+    },
+    "owner": "aaron_q"
   }
 }

@@ -2,6 +2,11 @@ import { MMKV } from 'react-native-mmkv';
 
 const storage = new MMKV();
 
+// Función de utilidad para validar y normalizar IDs
+const normalizeId = (id) => {
+    if (!id) return '';
+    return String(id).trim();
+};
 
 /**
  * Helper para guardar un item en una lista
@@ -15,18 +20,26 @@ export default mmkvHelper = {
      * @param {*} itemName nombre del item
      * @param {*} list nombre de la lista
      */
-    saveTask: (itemName,list) => {
-    const savedItems = storage.getString(list);
-    const items = savedItems ? JSON.parse(savedItems) : [];
+    saveTask: (itemName, list) => {
+        if (!itemName || !list) return;
+        
+        const savedItems = storage.getString(list);
+        const items = savedItems ? JSON.parse(savedItems) : [];
 
-    // 2. Crear el nuevo item de la lista
-    const newItem = { id: Date.now(), texto: itemName, completada: false };
+        // Encontrar el ID más alto y sumarle 1
+        const maxId = items.reduce((max, item) => {
+            const currentId = parseInt(item.id) || 0;
+            return currentId > max ? currentId : max;
+        }, 0);
 
-    // 3. Añadir el nuevo item a la lista
-    const newList = [...items, newItem];
+        const newItem = { 
+            id: String(maxId + 1), 
+            texto: String(itemName), 
+            completada: false 
+        };
 
-    // 4. Guardar el array actualizado en MMKV
-    storage.set(list, JSON.stringify(newList));
+        const newList = [...items, newItem];
+        storage.set(list, JSON.stringify(newList));
     },
 
     /**
@@ -35,11 +48,10 @@ export default mmkvHelper = {
      * @returns 
      */
     getTasks: (list) => {
-        //1. Obtiene los items de la lista proporcionada
+        if (!list) return [];
+        
         const savedItems = storage.getString(list);
-        // 2. Parsea los items a un array, en caso de que no existan, retorna un array vacio
-        const items = savedItems ? JSON.parse(savedItems) : [];
-        return items;
+        return savedItems ? JSON.parse(savedItems) : [];
     },
 
 
@@ -49,13 +61,12 @@ export default mmkvHelper = {
      * @param {*} list nombre de la lista
      * @returns 
      */
-    getTask: (id,list) => {
-        //1. Obtiene los items de la lista proporcionada
-        const items = getTasks();
-        // 2. Busca el item con el id proporcionado
-        const item = tasks.find(task => task.id === id);
-        // 3. Devuelve  el item encontrado
-        return task;
+    getTask: (id, list) => {
+        if (!id || !list) return null;
+        
+        const items = mmkvHelper.getTasks(list);
+        const normalizedId = normalizeId(id);
+        return items.find(item => normalizeId(item.id) === normalizedId) || null;
     },
     
     /**
@@ -63,17 +74,14 @@ export default mmkvHelper = {
      * @param {*} id id del item
      * @param {*} list nombre de la lista
      */
-    deleteTask: (id,list) => {
-        //1. Obtiene los items de la lista proporcionada
+    deleteTask: (id, list) => {
+        if (!id || !list) return;
+        
         const savedItems = storage.getString(list);
-        // 2. Devuelve los items a un array, en caso de que no existan, devuelve un array vacio
         const items = savedItems ? JSON.parse(savedItems) : [];
-
-        // 2. Elimina la tarea con id específico (por ejemplo, id = 123)
-        const idAEliminar = id;
-        const newSavedItems = items.filter(item => item.id !== idAEliminar);
-
-        // 3. Guardar la lista actualizada en MMKV
+        const normalizedId = normalizeId(id);
+        
+        const newSavedItems = items.filter(item => normalizeId(item.id) !== normalizedId);
         storage.set(list, JSON.stringify(newSavedItems));
     },
     
@@ -85,15 +93,15 @@ export default mmkvHelper = {
       * @param {*} list nombre de la lista
       */
     completeTask: (id, list) => {
-        //1. Obtiene los items de la lista proporcionada
+        if (!id || !list) return;
+        
         const savedItems = storage.getString(list);
         const items = savedItems ? JSON.parse(savedItems) : [];
-        // 2. Busca el item con el id proporcionado
-        const index = items.findIndex(item => item.id === id);
-        const item = items[index];
-        // 3. Si el item existe, actualiza el item
+        const normalizedId = normalizeId(id);
+        
+        const index = items.findIndex(item => normalizeId(item.id) === normalizedId);
         if (index !== -1) {
-            items[index].completada = !item.completada;
+            items[index].completada = !items[index].completada;
             storage.set(list, JSON.stringify(items));
         }
     }
