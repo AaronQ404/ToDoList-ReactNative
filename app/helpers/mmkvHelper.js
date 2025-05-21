@@ -104,5 +104,9 @@ export default mmkvHelper = {
             items[index].completada = !items[index].completada;
             storage.set(list, JSON.stringify(items));
         }
+    },
+
+    deleteAll: () => {
+        storage.clearAll()
     }
 }
