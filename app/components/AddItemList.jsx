@@ -19,7 +19,7 @@ export default function AddItemList({onAddTask}) {
     
 
     return (
-        <View className="todo-form">
+        <View className="flex-row justify-between items-center p-4 border-b border-gray-200">
             <TextInput className="borderWidth-1px shadow appearance-no text-xl m-4 p-4 rounded-lg" type="text" placeholder="Add a new task" value={newTask} onChangeText={setNewTask} />
             <Pressable  title='Add' className="bg-gray-300 rounded-lg p-2 text-center transition delay-50 duration 300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gray-100" onPress={() => handleAddTask()} >
                 <Text className='text-center p-2 text-2xl' >ADD</Text> 
