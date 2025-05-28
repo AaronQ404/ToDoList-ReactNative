@@ -23,7 +23,7 @@ export default function ToDoList() {
     }
 
     return (
-        <View>
+        <View className="w-screen h-full">
             <List 
                 list={list}
                 listName={listName}
