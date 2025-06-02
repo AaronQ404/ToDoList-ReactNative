@@ -1,7 +1,8 @@
 import { ScrollView, View } from "react-native";
 import ListItem from "./ListItem";
 
-export default function List({ list, listName, onCompleteTask, onDeleteTask }) {
+
+export default function List({ list, onClickItem, onDeleteItem }) {
     return (
         <View className="h-[85%] p-10 w-screen">
             <ScrollView>
@@ -15,9 +16,8 @@ export default function List({ list, listName, onCompleteTask, onDeleteTask }) {
                     <ListItem 
                         key={itemWithStringId.id}
                         item={itemWithStringId} 
-                        list={listName} 
-                        onCompleteTask={onCompleteTask} 
-                        onDeleteTask={onDeleteTask} 
+                        onPressItem={onClickItem} 
+                        onDeleteItem={onDeleteItem} 
                     />
                 );
             })}
