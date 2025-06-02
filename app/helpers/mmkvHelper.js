@@ -106,6 +106,39 @@ export default mmkvHelper = {
         }
     },
 
+
+
+
+    saveList: (listName) => {
+        if (!listName) return;
+        
+        const savedLists = storage.getString('listas');
+        const lists = savedLists ? JSON.parse(savedLists) : [];
+        // Encontrar el ID más alto y sumarle 1
+        const maxId = lists.reduce((max, item) => {
+            const currentId = parseInt(item.id) || 0;
+            return currentId > max ? currentId : max;
+        }, 0);
+
+        const newList = { 
+            id: String(maxId + 1), 
+            texto: String(listName), 
+            items: [] 
+        };
+        const newListas = [...lists, newList];
+        
+        storage.set('listas', JSON.stringify(newListas));
+    },
+
+    // createMainList: () => {
+    //     const savedLists = storage.getString('list');
+    // }
+
+    getAllLists: () => {
+        const savedItems = storage.getString('listas');
+        return savedItems ? JSON.parse(savedItems) : [];
+    },
+
     deleteAll: () => {
         storage.clearAll()
     }
