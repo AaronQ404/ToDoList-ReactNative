@@ -5,14 +5,22 @@ import { View } from "react-native";
 import Toast from 'react-native-toast-message';
 import mmkvHelper from "../helpers/mmkvHelper";
 import toastConfig from "../toast.config";
-import AddItemList from "./AddItemList";
+import AddButton from "./AddButton";
 import List from "./List";
+import ModalAddItem from "./ModalAddItem";
+
 
 
 export default function ListView() {
     const { listName, listId } = useLocalSearchParams();
     const [tasks, setTasks] = useState(mmkvHelper.getTasks(listId));
     const router = useRouter();
+    const [modalVisible, setModalVisible] = useState(false);
+
+
+    const handleModal = () => {
+        setModalVisible(true);
+    }
 
     const handleAddTask = (taskName) => {
         if(taskName.trim() === ''){
@@ -67,35 +75,6 @@ export default function ListView() {
        
     }
 
-
-
-    // const toastConfig = {
-    //     success: (props) => (
-    //         <SuccessToast
-    //             {...props}
-    //             contentContainerStyle={{ paddingHorizontal: 15 }}
-    //             text1Style={{
-    //                 fontSize: 20,
-    //                 fontWeight: '400'
-    //             }}
-    //             text2Style={{
-    //                 fontSize: 17
-    //             }}
-    //         />
-    //     ),
-    //     error: (props) => (
-    //         <ErrorToast
-    //             {...props}
-    //             text1Style={{
-    //                 fontSize: 20
-    //             }}
-    //             text2Style={{
-    //                 fontSize: 17
-    //             }}
-    //         />
-    //     )
-    // };
-
     return (
         <View className="w-screen h-full">
             <Stack.Screen 
@@ -118,7 +97,14 @@ export default function ListView() {
                 onClickItem={onClickItem}
                 onDeleteItem={onDeleteItem}
             />
-            <AddItemList onAddTask={handleAddTask}/>
+            <View className="items-center m-4">
+                <AddButton handleModal={handleModal} />
+            </View>
+            <ModalAddItem
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                handleAdd={handleAddTask}
+            />
             <Toast config={toastConfig} />
         </View>
     );
