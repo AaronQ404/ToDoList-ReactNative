@@ -1,15 +1,23 @@
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useState } from 'react';
 import { View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import mmkvHelper from '../helpers/mmkvHelper';
-import AddItemList from './AddItemList';
+import AddButton from "./AddButton";
+import ModalAddItem from "./ModalAddItem";
+
 import List from './List';
 
 export default HomePage = () => {
     
+
     const [lists,setLists] = useState(mmkvHelper.getAllLists());
+    const [modalVisible, setModalVisible] = useState(false);
     const router = useRouter();
+
+    const handleModal = () => {
+        setModalVisible(true);
+    }
 
     const onPressItem = (item)  => {
         router.navigate({
@@ -60,14 +68,25 @@ export default HomePage = () => {
     }
 
     return (
+
             <View className="w-screen h-full">                          
+            <Stack.Screen
+                title='Home'
+            />
                 <List
                     list={lists}
                     onClickItem={onPressItem}
                     onDeleteItem={onDeleteItem}
                     isAList = {true}
                 />
-                <AddItemList onAddTask={handleAddList}/>
+                <View className="items-center m-4">
+                    <AddButton handleModal={handleModal} />
+                </View>
+                <ModalAddItem
+                    modalVisible={modalVisible}
+                    setModalVisible = {setModalVisible}
+                    handleAdd={handleAddList}
+                />
             </View>
         );
 }
