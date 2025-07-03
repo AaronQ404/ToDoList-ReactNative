@@ -63,7 +63,6 @@ export default function ListView() {
     }
 
     const onDeleteItem = (item) => {
-        console.log(item);
         mmkvHelper.deleteTask(item.id,listId);
         Toast.show({
             type:'success',
@@ -81,7 +80,6 @@ export default function ListView() {
                 options={{ 
                     title: listName,
                     headerLeft: () => {
-                        console.log(router.canGoBack())
                         return router.canGoBack() ? <HeaderBackButton
                         onPress={() => router.back()}/> : (
                             <HeaderBackButton
