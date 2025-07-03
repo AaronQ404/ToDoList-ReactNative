@@ -140,10 +140,6 @@ export default mmkvHelper = {
         storage.set('listas', JSON.stringify(newListas));
     },
 
-    // createMainList: () => {
-    //     const savedLists = storage.getString('list');
-    // }
-
     getAllLists: () => {
         const savedItems = storage.getString('listas');
         return savedItems ? JSON.parse(savedItems) : [];
