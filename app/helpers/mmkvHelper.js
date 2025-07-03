@@ -107,7 +107,17 @@ export default mmkvHelper = {
     },
 
 
+    deleteList: (id) => {
+        if(!id) return;
 
+        const itemsInList = mmkvHelper.getTasks(id)
+        itemsInList.map(item => {
+            mmkvHelper.deleteTask(item.id,id)
+        });
+
+        mmkvHelper.deleteTask(id,'listas')
+
+    },
 
     saveList: (listName) => {
         if (!listName) return;

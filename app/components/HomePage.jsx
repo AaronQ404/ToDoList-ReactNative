@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import mmkvHelper from '../helpers/mmkvHelper';
+import toastConfig from "../toast.config";
 import AddButton from "./AddButton";
 import ModalAddItem from "./ModalAddItem";
 
@@ -10,7 +11,6 @@ import List from './List';
 
 export default HomePage = () => {
     
-
     const [lists,setLists] = useState(mmkvHelper.getAllLists());
     const [modalVisible, setModalVisible] = useState(false);
     const router = useRouter();
@@ -30,7 +30,7 @@ export default HomePage = () => {
     }
 
     const onDeleteItem = (item) => {
-        mmkvHelper.deleteTask(item.id,'listas');
+        mmkvHelper.deleteList(item.id);
         Toast.show({
             type:'success',
             text1: 'Lista eliminada',
@@ -59,10 +59,10 @@ export default HomePage = () => {
             mmkvHelper.saveList(listName);
             Toast.show({
                 type:'success',
-                text1:'Lista creada',
-                text2:'Lista '+itemName+' creada con exito',
+                text1:'Creada',
+                text2:'Lista '+listName+' creada con exito',
                 visibilityTime: '2000'
-            });
+            })
             updateList();
         }
     }
@@ -87,6 +87,7 @@ export default HomePage = () => {
                     setModalVisible = {setModalVisible}
                     handleAdd={handleAddList}
                 />
+                <Toast config={toastConfig} />
             </View>
         );
 }
