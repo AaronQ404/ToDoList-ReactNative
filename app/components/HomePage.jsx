@@ -1,23 +1,33 @@
-import { Stack, useRouter } from "expo-router";
-import { useState } from 'react';
+import { Stack, useFocusEffect, useRouter } from "expo-router";
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import mmkvHelper from '../helpers/mmkvHelper';
-import toastConfig from "../toast.config";
 import AddButton from "./AddButton";
-import ModalAddItem from "./ModalAddItem";
-
 import List from './List';
+import ModalAddItem from "./ModalAddItem";
+import OptionButton from './OptionButton';
 
 export default HomePage = () => {
     
+    // const [lists,setLists] = useState(mmkvHelper.getAllLists());
     const [lists,setLists] = useState(mmkvHelper.getAllLists());
     const [modalVisible, setModalVisible] = useState(false);
     const router = useRouter();
 
+
+    useFocusEffect(
+        React.useCallback(()=>{
+            updateList()
+        },[])
+    )
+
+
     const handleModal = () => {
         setModalVisible(true);
-    }
+    }    
+  
+
 
     const onPressItem = (item)  => {
         router.navigate({
@@ -35,7 +45,7 @@ export default HomePage = () => {
             type:'success',
             text1: 'Lista eliminada',
             text2:'Lista '+item.texto+' eliminada con éxito',
-            visibilityTime: '2000'
+            visibilityTime: '1000'
         })
         updateList();
     }
@@ -51,8 +61,8 @@ export default HomePage = () => {
             Toast.show({
                 type:'error',
                 text1:'Error',
-                text2:'No se puede insertar una lista sin nombre.',
-                visibilityTime: '4000'
+                text2:'No se puede insertar listas sin un nombre.',
+                visibilityTime: '2000'
             })
             return;
         }else{
@@ -61,7 +71,7 @@ export default HomePage = () => {
                 type:'success',
                 text1:'Creada',
                 text2:'Lista '+listName+' creada con exito',
-                visibilityTime: '2000'
+                visibilityTime: '1000'
             })
             updateList();
         }
@@ -69,9 +79,15 @@ export default HomePage = () => {
 
     return (
 
-            <View className="w-screen h-full">                          
-            <Stack.Screen
-                title='Home'
+            <View className="w-screen h-full dark:bg-neutral-900">                          
+            <Stack.Screen               
+                options={{
+                    title:'Inicio',
+                    headerRight: () => {
+                        return <OptionButton/>
+                    }
+
+                 }}
             />
                 <List
                     list={lists}
@@ -87,7 +103,7 @@ export default HomePage = () => {
                     setModalVisible = {setModalVisible}
                     handleAdd={handleAddList}
                 />
-                <Toast config={toastConfig} />
+                {/* <Toast config={toastConfig(colorScheme)} /> */}
             </View>
         );
 }

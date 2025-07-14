@@ -33,7 +33,7 @@ export default function ListItem({ item, onPressItem, onDeleteItem,isAList }) {
 
 
     return (
-        <Swipeable
+        <Swipeable className='dark:bg-neutral-900'
         ref={swipeableRef}
         onSwipeableOpen={direction => {
             if (direction === 'left') {
@@ -44,9 +44,8 @@ export default function ListItem({ item, onPressItem, onDeleteItem,isAList }) {
         }}
         renderLeftActions={renderLeftActions}
         renderRightActions={renderRightActions}>
-            <Pressable className={`  ${item.completada ? "bg-green-100" : 'bg-white'} m-2 flex-row rounded-lg justify-between items-center p-4 border-b border-gray-200 hover:
-          transition-colors duration-200 ease-in-out bg-white-100 hover:bg-blue-100  transform scale-auto ease-in-out `}>
-                <Text className={`p-4 text-lg w-[70%] ${item.completada ? 'line-through text-gray-500' : ''}`}>
+            <Pressable className={`  ${item.completada ? "bg-green-100 dark:bg-green-200" : 'bg-white dark:bg-neutral-800'} m-2 flex-row rounded-lg justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200 ease-in-out'}`}>
+                <Text className={`p-4 text-lg w-[70%] ${item.completada ? 'line-through text-gray-500' : 'dark:text-white'}`}>
                     {item.texto}
                 </Text>
             </Pressable>

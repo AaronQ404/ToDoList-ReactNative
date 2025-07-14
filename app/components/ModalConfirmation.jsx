@@ -1,19 +1,12 @@
-import { useState } from "react";
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, Text, View } from "react-native";
 
-export default function ModalAddItem( {modalVisible, setModalVisible, handleAdd} ) {
-
-    const [newItem, setNewItem] = useState('');
-
+export default function ModalConfirmation( {modalVisible, setModalVisible, handleOk, message} ) {
     const handleSubmit = () => {
-        handleAdd(newItem)
-        setNewItem('')
-        setModalVisible(false)
+        handleOk()
     }
 
 
-return (
-    <Modal
+return (<Modal
     animationType="fade"
     transparent={true}
     visible={modalVisible}
@@ -21,17 +14,11 @@ return (
     >
         <View className="flex-1 justify-center items-center bg-black/30 ">
             <View className="w-72 h-52 bg-white rounded-lg justify-center items-center shadow-lg p-5 dark:bg-neutral-800">
-                <Text className="text-2xl font-bold p-4 dark:text-white" >Agregar Item</Text>
-                <TextInput
-                    onChangeText={text => setNewItem(text)}
-                    className="w-full h-10 bg-gray-200 rounded-lg p-2 dark:bg-neutral-700"
-                    placeholder="Agregar Item"
-                    onSubmitEditing={handleSubmit}
-                />
+                <Text className="text-2xl font-bold p-4 dark:text-white" >{message}</Text>
                 <View className="flex-row w-full mt-4 space-x-2">
                     <Pressable className="flex-1 h-10 bg-green-500 rounded-lg p-2 dark:bg-green-700"
                         onPress={handleSubmit}>
-                        <Text className="text-white text-center">Agregar</Text>
+                        <Text className="text-white text-center">Confirmar</Text>
                     </Pressable>
                     <Pressable className="flex-1 h-10 bg-red-500 rounded-lg p-2 dark:bg-red-700"
                         onPress={() => setModalVisible(false)}>
@@ -40,7 +27,5 @@ return (
                 </View>
             </View>
       </View>
-    </Modal>
-)
+    </Modal>);
 }
-

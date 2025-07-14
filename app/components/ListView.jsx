@@ -1,10 +1,10 @@
-import { HeaderBackButton } from "@react-navigation/elements";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from 'react-native-toast-message';
 import mmkvHelper from "../helpers/mmkvHelper";
-import toastConfig from "../toast.config";
 import AddButton from "./AddButton";
 import List from "./List";
 import ModalAddItem from "./ModalAddItem";
@@ -16,7 +16,7 @@ export default function ListView() {
     const [tasks, setTasks] = useState(mmkvHelper.getTasks(listId));
     const router = useRouter();
     const [modalVisible, setModalVisible] = useState(false);
-
+    const {colorScheme} = useColorScheme();
 
     const handleModal = () => {
         setModalVisible(true);
@@ -75,35 +75,32 @@ export default function ListView() {
     }
 
     return (
-        <View className="w-screen h-full">
-            <Stack.Screen 
-                options={{ 
-                    title: listName,
-                    headerLeft: () => {
-                        return router.canGoBack() ? <HeaderBackButton
-                        onPress={() => router.back()}/> : (
-                            <HeaderBackButton
-                                onPress={() => router.navigate('/components/HomePage')}
-                            />
-                        );
-                    }
-                }} 
-            />
-            <List 
-                list={tasks}
-                listName={listName}
-                onClickItem={onClickItem}
-                onDeleteItem={onDeleteItem}
-            />
-            <View className="items-center m-4">
-                <AddButton handleModal={handleModal} />
+       <GestureHandlerRootView>
+            <View className="w-screen h-full dark:bg-neutral-900">
+                <Stack.Screen 
+                    options={{ 
+                        title: listName,
+                        headerRight: () => {
+                            return <OptionButton/>
+                        }
+                    }} 
+                />
+                <List 
+                    list={tasks}
+                    listName={listName}
+                    onClickItem={onClickItem}
+                    onDeleteItem={onDeleteItem}
+                />
+                <View className="items-center m-4">
+                    <AddButton handleModal={handleModal} />
+                </View>
+                <ModalAddItem
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    handleAdd={handleAddTask}
+                />
+                {/* <Toast config={toastConfig(colorScheme)} /> */}
             </View>
-            <ModalAddItem
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                handleAdd={handleAddTask}
-            />
-            <Toast config={toastConfig} />
-        </View>
+        </GestureHandlerRootView>
     );
 }
