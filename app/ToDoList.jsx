@@ -4,13 +4,14 @@ import "../global.css";
 import HomePage from "./components/HomePage";
 import toastConfig from "./toast.config";
 
+
+
 export default function ToDoList() {
-   
 
     return (
-        <View className="w-screen h-full">
-            <HomePage />
-            <Toast config={toastConfig} />
-        </View>
+            <View className="w-screen h-full dark:bg-neutral-900">
+                <HomePage />
+                <Toast config={toastConfig} />
+            </View>
     );
 }

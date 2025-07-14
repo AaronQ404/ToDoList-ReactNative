@@ -147,5 +147,25 @@ export default mmkvHelper = {
 
     deleteAll: () => {
         storage.clearAll()
-    }
+    },
+
+    deleteAllList:() => {
+        if(!'listas') return;
+
+        const itemsInList = mmkvHelper.getTasks('listas')
+        itemsInList.map(item => {
+            mmkvHelper.deleteList(item.id)
+        });
+    },
+
+    saveSettings: (settings) => {
+        if (!settings) return;
+        storage.set('settings', JSON.stringify(settings));
+    },
+    
+    getSettings: () => {
+        const saved = storage.getString('settings');
+        console.log(saved)
+        return saved ? JSON.parse(saved) : {};
+    },
 }
